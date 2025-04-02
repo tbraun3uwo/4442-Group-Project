@@ -1,3 +1,3 @@
 # 4442-Group-Project
 
-# project members 
+# project members: Travis, Nasri, Tim, Reesa
