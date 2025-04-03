@@ -95,6 +95,9 @@ def display_original_symbols(symbols):
     for i, symbol in enumerate(symbols):
         file_path = Path("symbols") / f"symbol_{i+1}.png"
         cv2.imwrite(str(file_path), symbol)  # Save image
+        thresh = preprocess_image(file_path)
+        thresh = cv2.bitwise_not(thresh)
+        cv2.imwrite(str(file_path), thresh)
         pred_class, pred_idx, probs = model.predict(file_path)
         symbol = detectorModel.detector(file_path)
         equation += str(symbol)
