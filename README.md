@@ -44,4 +44,4 @@ Our project utilizes computer vision and Convolutional Neural Networks (CNNs) fo
 
 - To fine-tune the model, please download the Handwritten Math Symbols Dataset dataset ( https://www.kaggle.com/datasets/sagyamthapa/handwritten-math-symbols/data ), unzip and put it in the "/data" folder
 
-- To use our already fine-tuned model, please download the model ( https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/EcfutxOC8gJIlVQmAgzDy2UB2dfIAuR0vsd5kodEeJHOcQ?e=aQ9YOC ) and put it in the "/model" folder (if you use the fine-tuned model, no need to download the dataset or run trainModel.py)
+- To use our already fine-tuned model, please download the model ( https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ETq8i5QUIZRKq8UbgSSCP_gB4CD62vKoQRQMfDLuaPAdMA?e=W4QDeD ) and put it in the "/model" folder (if you use the fine-tuned model, no need to download the dataset or run trainModel.py)
