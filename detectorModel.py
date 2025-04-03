@@ -1,7 +1,6 @@
 from fastai.learner import load_learner
 modelLocalPath = "model/model.pkl"
-digImg = "data/datasetSingleCharacter/add/8IIOCwg9.png"
-
+digImg = "/Users/nsri2/Documents/AI2 project/4442-Group-Project/data/test/Screenshot 2025-04-03 at 11.37.11 AM.png"
 
 model = load_learner(modelLocalPath)
 
