@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Helper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2c3e50;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pictures/math_wallpaper.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: brightness(0.7);
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #34495e;
+            margin-bottom: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .import-button {
+            background: #767676;
+            color: white;
+        }
+
+        .process-button {
+            background: #989797;
+            color: white;
+        }
+
+        #video {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        .camera-controls {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .camera-button {
+            background: #767676;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+
+        .camera-button:hover {
+            background: #5a5a5a;
+        }
+
+        #preview-container {
+            display: none;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        #preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-button {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+
+        .preview-button:hover {
+            background: #2980b9;
+        }
+
+        .cropper-container {
+            max-height: 400px;
+            margin: 20px auto;
+        }
+
+        .button-group {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .crop-button {
+            background: #e74c3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .crop-button:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 480px) {
+            .welcome-container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            p {
+                font-size: 1.2rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+
+        .header-character {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .header-character img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="header-character">
+            <img src="pictures/1.png" alt="Character waiting" class="character-image" id="header-waiting">
+            <img src="pictures/2.png" alt="Character processing" class="character-image hidden" id="header-processing">
+            <img src="pictures/3.png" alt="Character result" class="character-image hidden" id="header-result">
+        </div>
+        <p>CS4442 - Math Helper</p>
+        <p class="subtitle">Transforming Education Through Technology</p>
+        <div class="button-container">
+            <button class="button import-button" onclick="startCamera()">Import Image</button>
+            <button class="button process-button">Process & Evaluate</button>
+        </div>
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas"></canvas>
+        <div class="camera-controls" id="cameraControls">
+            <button class="camera-button" onclick="captureImage()">Take Picture</button>
+            <button class="camera-button" onclick="stopCamera()">Close Camera</button>
+        </div>
+        <div id="preview-container">
+            <div class="cropper-container">
+                <img id="preview-image" alt="Captured image preview">
+            </div>
+            <div class="button-group">
+                <button class="preview-button" onclick="retakePicture()">Retake Picture</button>
+                <button class="preview-button" onclick="hidePreview()">Close Preview</button>
+                <button class="crop-button" onclick="cropImage()">Crop Image</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script>
+        let stream = null;
+        let cropper = null;
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const cameraControls = document.getElementById('cameraControls');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const headerWaiting = document.getElementById('header-waiting');
+        const headerProcessing = document.getElementById('header-processing');
+        const headerResult = document.getElementById('header-result');
+
+        function switchCharacter(state) {
+            // Hide all characters first
+            headerWaiting.classList.add('hidden');
+            headerProcessing.classList.add('hidden');
+            headerResult.classList.add('hidden');
+
+            // Show the appropriate character
+            switch(state) {
+                case 'waiting':
+                    headerWaiting.classList.remove('hidden');
+                    break;
+                case 'processing':
+                    headerProcessing.classList.remove('hidden');
+                    break;
+                case 'result':
+                    headerResult.classList.remove('hidden');
+                    break;
+            }
+        }
+
+        async function startCamera() {
+            try {
+                switchCharacter('processing');
+                // Check if we already have a stream
+                if (stream) {
+                    video.style.display = 'block';
+                    cameraControls.style.display = 'block';
+                    previewContainer.style.display = 'none';
+                    return;
+                }
+
+                // Check if we have permission
+                const permissionStatus = await navigator.permissions.query({ name: 'camera' });
+                
+                if (permissionStatus.state === 'granted') {
+                    // We already have permission, just get the stream
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: 'environment' } 
+                    });
+                } else if (permissionStatus.state === 'prompt') {
+                    // We need to ask for permission
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: 'environment' } 
+                    });
+                } else {
+                    // Permission denied
+                    alert('Camera access is required for this feature. Please enable it in your browser settings.');
+                    return;
+                }
+                
+                // Show video element and camera controls
+                video.style.display = 'block';
+                cameraControls.style.display = 'block';
+                previewContainer.style.display = 'none';
+                
+                // Set video source to the stream
+                video.srcObject = stream;
+                
+                // Switch back to waiting once camera is ready
+                switchCharacter('waiting');
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Unable to access camera. Please ensure you have granted camera permissions.');
+                switchCharacter('waiting');
+            }
+        }
+
+        function captureImage() {
+            switchCharacter('processing');
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas to image and show preview
+            previewImage.src = canvas.toDataURL('image/jpeg');
+            previewContainer.style.display = 'block';
+            cameraControls.style.display = 'none';
+            video.style.display = 'none';
+
+            // Initialize Cropper.js
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(previewImage, {
+                aspectRatio: NaN,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+                restore: false,
+                guides: true,
+                center: true,
+                highlight: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: true,
+            });
+            
+            setTimeout(() => switchCharacter('waiting'), 1000);
+        }
+
+        function cropImage() {
+            if (!cropper) return;
+            
+            switchCharacter('processing');
+            // Get the cropped canvas
+            const croppedCanvas = cropper.getCroppedCanvas();
+            
+            // Update the preview image with cropped version
+            previewImage.src = croppedCanvas.toDataURL('image/jpeg');
+            
+            // Destroy the cropper instance
+            cropper.destroy();
+            cropper = null;
+            
+            setTimeout(() => switchCharacter('result'), 1000);
+        }
+
+        function stopCamera() {
+            if (stream) {
+                switchCharacter('waiting');
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                video.style.display = 'none';
+                cameraControls.style.display = 'none';
+                previewContainer.style.display = 'none';
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
+            }
+        }
+
+        function retakePicture() {
+            switchCharacter('waiting');
+            previewContainer.style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            startCamera();
+        }
+
+        function hidePreview() {
+            switchCharacter('waiting');
+            previewContainer.style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        }
+
+        // Initialize with waiting state
+        switchCharacter('waiting');
+    </script>
+</body>
+</html> 
