@@ -1,12 +1,18 @@
+import os
+from pathlib import Path
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from fastai.learner import load_learner
+
+import detectorModel
 
 
 def preprocess_image(image_path):
     # Read and threshold image
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    _, thresh = cv2.threshold(image, 115, 255, cv2.THRESH_BINARY_INV)
+    _, thresh = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY_INV)
 
     # Use morphological operations to connect broken parts
     kernel = np.ones((3, 3), np.uint8)
@@ -84,27 +90,27 @@ def segment_symbols(original_img, thresh_img):
 
 # Modified display function for original image symbols
 def display_original_symbols(symbols):
-    plt.figure(figsize=(15, 3))
+    equation = ""
+    model = load_learner('model/model.pkl')
     for i, symbol in enumerate(symbols):
-        plt.subplot(1, len(symbols), i + 1)
-        plt.imshow(symbol, cmap='gray')
-        plt.title(f"Original Symbol {i + 1}")
-        plt.axis('off')
-    plt.show()
+        file_path = Path("symbols") / f"symbol_{i+1}.png"
+        cv2.imwrite(str(file_path), symbol)  # Save image
+        pred_class, pred_idx, probs = model.predict(file_path)
+        symbol = detectorModel.detector(file_path)
+        equation += str(symbol)
+        print(f"symbol_{i+1}\nSymbol: {symbol} \nConfidence: {float(probs[pred_idx])}\n")
+    return equation
+        # if os.path.exists(file_path):
+        #     os.remove(file_path)
 
-
-
-
-def display_symbols(symbols):
-    plt.figure(figsize=(15, 3))
-    for i, symbol in enumerate(symbols):
-        plt.subplot(1, len(symbols), i + 1)
-        plt.imshow(symbol, cmap='gray')
-        plt.title(f"Symbol {i + 1}")
-        plt.axis('off')
-    plt.show()
-
-
+# def display_original_symbols(symbols):
+#     plt.figure(figsize=(15, 3))
+#     for i, symbol in enumerate(symbols):
+#         plt.subplot(1, len(symbols), i + 1)
+#         plt.imshow(symbol, cmap='gray')
+#         plt.title(f"Original Symbol {i + 1}")
+#         plt.axis('off')
+#     plt.show()
 
 
 def display_individual_contours(thresh_img):
@@ -150,10 +156,14 @@ def display_individual_contours(thresh_img):
 
     return contour_symbols
 
-# In your main code:
-for i in range(30, 40):
-    image_path = "dataset/" + f'{i}' + ".png"
+def find_equation(image_path):
     original_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read original
     thresh = preprocess_image(image_path)  # Get processed version
     symbols = segment_symbols(original_img, thresh)
-    display_original_symbols(symbols)
+    return display_original_symbols(symbols)
+
+# In your main code:
+for i in range(11):
+    image_path  = f"Equation Data/{i+1}.png"
+    print(f"\n{i+1}.png")
+    print(find_equation(image_path))

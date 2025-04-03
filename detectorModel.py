@@ -1,6 +1,5 @@
 from fastai.learner import load_learner
 modelLocalPath = "model/model.pkl"
-digImg = "/Users/nsri2/Documents/AI2 project/4442-Group-Project/data/test/Screenshot 2025-04-03 at 11.37.11 AM.png"
 
 model = load_learner(modelLocalPath)
 
@@ -24,8 +23,6 @@ def detector(digImg):
                 return "*"
             case "sub":
                 return "-"
-            
-    
-    return model.predict(digImg)[0]
 
-print(detector(digImg))
+
+    return model.predict(digImg)[0]
