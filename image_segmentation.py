@@ -103,17 +103,6 @@ def display_original_symbols(symbols):
         equation += str(symbol)
         print(f"symbol_{i+1}\nSymbol: {symbol} \nConfidence: {float(probs[pred_idx])}\n")
     return equation
-        # if os.path.exists(file_path):
-        #     os.remove(file_path)
-
-# def display_original_symbols(symbols):
-#     plt.figure(figsize=(15, 3))
-#     for i, symbol in enumerate(symbols):
-#         plt.subplot(1, len(symbols), i + 1)
-#         plt.imshow(symbol, cmap='gray')
-#         plt.title(f"Original Symbol {i + 1}")
-#         plt.axis('off')
-#     plt.show()
 
 
 def display_individual_contours(thresh_img):
