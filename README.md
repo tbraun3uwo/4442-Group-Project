@@ -35,7 +35,7 @@ Our project utilizes computer vision and Convolutional Neural Networks (CNNs) fo
 
 2. MMNIST dataset c
     - Contains 70.0k handwriten digits from 0-9
-    - Source: [MNIST] (https://www.kaggle.com/datasets/playlist/mnistzip?fbclid=IwY2xjawJbpopleHRuA2FlbQIxMAABHYJBd2TRkWfutTysvVCP96Wj3mTmC2ki5l33pJbZkuA2SXXfVu1EWLGNmg_aem_9n4Bjp9gSy-viGtYoqVgEw)
+    - Source: [MNIST](https://www.kaggle.com/datasets/playlist/mnistzip?fbclid=IwY2xjawJbpopleHRuA2FlbQIxMAABHYJBd2TRkWfutTysvVCP96Wj3mTmC2ki5l33pJbZkuA2SXXfVu1EWLGNmg_aem_9n4Bjp9gSy-viGtYoqVgEw)
 
 To effectively train the model, we merge the two datasets together to create a larger dataset, can be found here (https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8)
 
@@ -47,6 +47,6 @@ To effectively train the model, we merge the two datasets together to create a l
 
 - detectorModel.py: run the trained model and return the characterPrediction
 
-- To fine-tune the model, please download the dataset ( https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8 ), untar by using command `tar -xzf mathDataset.tar.gz` and put it in the "/data" folder
+- To fine-tune the model, please download the dataset [here](https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8), untar by using command `tar -xzf mathDataset.tar.gz` and put it in the "/data" folder
 
-- To use our already fine-tuned model, please download the model ( https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ESDoGlpcWl9MsEfUygB8kIUBDKCVevEMgbGGr4ltZ8FT5g?e=Ddijkx ) and put it in the "/model" folder (if you use the fine-tuned model, no need to download the dataset or run trainModel.py)
+- To use our already fine-tuned model, please download the [model here](https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ESDoGlpcWl9MsEfUygB8kIUBDKCVevEMgbGGr4ltZ8FT5g?e=Ddijkx) and put it in the "/model" folder (if you use the fine-tuned model, no need to download the dataset or run trainModel.py)
