@@ -37,7 +37,7 @@ Our project utilizes computer vision and Convolutional Neural Networks (CNNs) fo
     - Contains 70.0k handwriten digits from 0-9
     - Source: [MNIST](https://www.kaggle.com/datasets/playlist/mnistzip?fbclid=IwY2xjawJbpopleHRuA2FlbQIxMAABHYJBd2TRkWfutTysvVCP96Wj3mTmC2ki5l33pJbZkuA2SXXfVu1EWLGNmg_aem_9n4Bjp9gSy-viGtYoqVgEw)
 
-To effectively train the model, we merge the two datasets together to create a larger dataset, can be found here (https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8)
+To effectively train the model, we merge the two datasets together to create a [larger dataset here](https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8)
 
 ### Running our app
 - Requirement: Python 3.11
