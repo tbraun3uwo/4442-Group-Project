@@ -1,15 +1,12 @@
-import os
 from pathlib import Path
-
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from fastai.learner import load_learner
-
 import detectorModel
 
 
 def preprocess_image(image_path):
+    """Setup image for processing"""
     # Read and threshold image
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     _, thresh = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY_INV)
@@ -38,6 +35,7 @@ def merge_boxes(boxes):
 
 
 def segment_symbols(original_img, thresh_img):
+    """Parse equation into set of symbols"""
     # Find contours
     contours, _ = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -88,8 +86,8 @@ def segment_symbols(original_img, thresh_img):
 
     return symbols
 
-# Modified display function for original image symbols
-def display_original_symbols(symbols):
+def symbol_conversion(symbols):
+    """Convert symbol to operator or digit using ML model"""
     equation = ""
     model = load_learner('model/model.pkl')
     for i, symbol in enumerate(symbols):
@@ -101,61 +99,11 @@ def display_original_symbols(symbols):
         pred_class, pred_idx, probs = model.predict(file_path)
         symbol = detectorModel.detector(file_path)
         equation += str(symbol)
-        print(f"symbol_{i+1}\nSymbol: {symbol} \nConfidence: {float(probs[pred_idx])}\n")
     return equation
 
-
-def display_individual_contours(thresh_img):
-    # Find contours
-    contours, _ = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Get bounding boxes for all contours and sort them by x-coordinate (left-to-right)
-    boxes = [cv2.boundingRect(cnt) for cnt in contours]
-    boxes.sort(key=lambda b: b[0])  # Sort by x-coordinate
-
-    # Create individual contour symbols
-    contour_symbols = []
-    for box in boxes:
-        x, y, w, h = box
-
-        # Extract with padding (same as your symbol extraction)
-        padding = 20
-        x_start = max(0, x - padding)
-        y_start = max(0, y - padding)
-        x_end = min(thresh_img.shape[1], x + w + padding)
-        y_end = min(thresh_img.shape[0], y + h + padding)
-
-        symbol = thresh_img[y_start:y_end, x_start:x_end]
-
-        # Make square (same as your symbol processing)
-        max_dim = max(symbol.shape)
-        square_symbol = np.zeros((max_dim, max_dim), dtype=np.uint8)
-        y_offset = (max_dim - symbol.shape[0]) // 2
-        x_offset = (max_dim - symbol.shape[1]) // 2
-        square_symbol[y_offset:y_offset + symbol.shape[0],
-        x_offset:x_offset + symbol.shape[1]] = symbol
-
-        contour_symbols.append(square_symbol)
-
-    # Display in the same format as your symbols
-    plt.figure(figsize=(15, 3))
-    for i, symbol in enumerate(contour_symbols):
-        plt.subplot(1, len(contour_symbols), i + 1)
-        plt.imshow(symbol, cmap='gray')
-        plt.title(f"Contour {i + 1}")
-        plt.axis('off')
-    plt.show()
-
-    return contour_symbols
-
 def find_equation(image_path):
+    """Convert original screenshot to equation"""
     original_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read original
     thresh = preprocess_image(image_path)  # Get processed version
     symbols = segment_symbols(original_img, thresh)
-    return display_original_symbols(symbols)
-
-# In your main code:
-for i in range(11):
-    image_path  = f"Equation Data/{i+1}.png"
-    print(f"\n{i+1}.png")
-    print(find_equation(image_path))
+    return symbol_conversion(symbols)
