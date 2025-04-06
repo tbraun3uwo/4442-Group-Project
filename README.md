@@ -1,6 +1,6 @@
 # AI-Powered Handwriting Recognition for Automated Student Work Evaluation
 # Project members: Travis, Nasri, Tim, Reesa
-# MathStang - an app to solve math questions
+# MathStang - an AI-powered grading assistant for handwritten math work
 =======
 ## Project Members
 - Timothy Nguyen
@@ -19,10 +19,20 @@
 ## Project Abstract
 
 ### Introduction
-In a growing society, as student populations increase, teachers' workload increases, making it difficult to provide timely feedback on student assignments. As an attempt to reduce teacher workload, we propose an AI-powered application that automates the recognition, evaluation, and feedback process for student work. For this project, our app will focus on fundamental algebraic problems such as addition, subtraction, multiplication and division. By taking advantage of handwriting recognition (HWR), the app transcribes student handwritten responses to machine-readable text, performs cross-checking and evaluates student's work.
+In a growing society, as student populations increase, teachers' workload increases, making it difficult to provide timely feedback on student assignments. As an attempt to reduce teacher workload, we propose an AI-powered application that automates the recognition, evaluation, and feedback process for student work. Our app focuses on fundamental algebraic problems such as addition, subtraction, multiplication and division. By taking advantage of handwriting recognition (HWR), the app:
+- Transcribes student handwritten responses to machine-readable text
+- Evaluates the correctness of each step in the solution
+- Identifies common errors and misconceptions
+- Provides detailed feedback on where students went wrong
+- Suggests areas for improvement
 
 ### AI Methods
-Our project utilizes computer vision and Convolutional Neural Networks (CNNs) for handwriting recognition (HWR) to accurately detect and transcribe handwritten expressions. CNNs extract key features from handwriting, such as edges, curves, and stroke patterns, enabling precise character recognition, even across varied handwriting styles. The process involves image preprocessing, feature extraction, and classification, where the CNN scans, learns, and categorizes digits, operators, and variables.
+Our project utilizes computer vision and Convolutional Neural Networks (CNNs) for handwriting recognition (HWR) to accurately detect and transcribe handwritten expressions. CNNs extract key features from handwriting, such as edges, curves, and stroke patterns, enabling precise character recognition, even across varied handwriting styles. The process involves:
+1. Image preprocessing and feature extraction
+2. Character and symbol recognition
+3. Step-by-step solution analysis
+4. Error detection and classification
+5. Feedback generation based on identified errors
 
 ### Datasets
 1. Handwritten Math Symbols Dataset by Sagyam Thapa
@@ -45,7 +55,11 @@ To effectively train the model, we merge the two datasets together to create a [
 
 - trainModel.py: fine tune available pre-trained resnet18 using Handwritten Math Symbols dataset to recognize each of the math symbols
 
-- detectorModel.py: run the trained model and return the characterPrediction
+- detectorModel.py: run the trained model to:
+  - Recognize handwritten math work
+  - Evaluate solution steps
+  - Generate grading feedback
+  - Identify common errors
 
 - To fine-tune the model, please download the [dataset here](https://uwoca-my.sharepoint.com/:u:/g/personal/knguy52_uwo_ca/ES9eNau2jsJFjAlgWAJWtXgBLIL-tsgT4GWAtaQN2Rw3HQ?e=OmdMl8), untar by using command `tar -xzf mathDataset.tar.gz` and put it in the "/data" folder
 
