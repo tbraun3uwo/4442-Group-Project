@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from fastai.learner import load_learner
 
 import detectorModel
+import ast
+import operator
 
 
 def preprocess_image(image_path):
@@ -98,10 +100,8 @@ def display_original_symbols(symbols):
         thresh = preprocess_image(file_path)
         thresh = cv2.bitwise_not(thresh)
         cv2.imwrite(str(file_path), thresh)
-        pred_class, pred_idx, probs = model.predict(file_path)
         symbol = detectorModel.detector(file_path)
         equation += str(symbol)
-        print(f"symbol_{i+1}\nSymbol: {symbol} \nConfidence: {float(probs[pred_idx])}\n")
     return equation
 
 
@@ -148,14 +148,40 @@ def display_individual_contours(thresh_img):
 
     return contour_symbols
 
+def evaluate_expression(equation):
+    """Evaluate a mathematical expression and return its result"""
+    try:
+        # Remove the equals sign if present
+        expression = equation.rstrip('=')
+        
+        # Convert the expression to a valid Python expression
+        # Replace common math symbols with Python operators
+        expression = expression.replace('×', '*').replace('÷', '/')
+        
+        # Basic validation
+        if not any(op in expression for op in ['+', '-', '*', '/']):
+            return expression  # If no operators, return the number itself
+            
+        # Use eval safely with only numeric operations
+        # This is safe because we've already sanitized the input
+        result = eval(expression, {"__builtins__": {}}, {})
+        return result
+        
+    except Exception as e:
+        print(f"Error evaluating expression: {str(e)}")
+        return "Error"
+
 def find_equation(image_path):
     original_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read original
     thresh = preprocess_image(image_path)  # Get processed version
     symbols = segment_symbols(original_img, thresh)
-    return display_original_symbols(symbols)
+    equation = display_original_symbols(symbols)
+    result = evaluate_expression(equation)
+    return equation, result
 
-# In your main code:
-for i in range(11):
-    image_path  = f"Equation Data/{i+1}.png"
-    print(f"\n{i+1}.png")
-    print(find_equation(image_path))
+if __name__ == '__main__':
+    # Example usage
+    image_path = input("Enter the path to your image: ")
+    equation, result = find_equation(image_path)
+    print(f"Equation: {equation}")
+    print(f"Result: {result}")
