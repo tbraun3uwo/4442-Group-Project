@@ -1,7 +1,6 @@
 from pathlib import Path
 import cv2
 import numpy as np
-from fastai.learner import load_learner
 import detectorModel
 
 
@@ -11,7 +10,7 @@ def preprocess_image(image_path):
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     _, thresh = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY_INV)
 
-    # Use morphological operations to connect broken parts
+    # Morphological operations to connect broken parts
     kernel = np.ones((3, 3), np.uint8)
     dilated = cv2.dilate(thresh, kernel, iterations=1)
     return dilated
@@ -31,7 +30,7 @@ def merge_boxes(boxes):
     y_min = min(box[1] for box in boxes)
     x_max = max(box[0] + box[2] for box in boxes)
     y_max = max(box[1] + box[3] for box in boxes)
-    return (x_min, y_min, x_max - x_min, y_max - y_min)
+    return x_min, y_min, x_max - x_min, y_max - y_min
 
 
 def segment_symbols(original_img, thresh_img):
@@ -89,14 +88,12 @@ def segment_symbols(original_img, thresh_img):
 def symbol_conversion(symbols):
     """Convert symbol to operator or digit using ML model"""
     equation = ""
-    model = load_learner('model/model.pkl')
     for i, symbol in enumerate(symbols):
         file_path = Path("symbols") / f"symbol_{i+1}.png"
         cv2.imwrite(str(file_path), symbol)  # Save image
         thresh = preprocess_image(file_path)
         thresh = cv2.bitwise_not(thresh)
         cv2.imwrite(str(file_path), thresh)
-        pred_class, pred_idx, probs = model.predict(file_path)
         symbol = detectorModel.detector(file_path)
         equation += str(symbol)
     return equation
