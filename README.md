@@ -5,7 +5,6 @@
 ## Project Members
 - Timothy Nguyen
 - Travis Braun
-- Reesa Dayani
 - Nasri Hussein
 
 ## Course Information
@@ -27,7 +26,7 @@ In a growing society, as student populations increase, teachers' workload increa
 - Suggests areas for improvement
 
 ### AI Methods
-Our project utilizes computer vision and Convolutional Neural Networks (CNNs) for handwriting recognition (HWR) to accurately detect and transcribe handwritten expressions. CNNs extract key features from handwriting, such as edges, curves, and stroke patterns, enabling precise character recognition, even across varied handwriting styles. The process involves:
+Our project utilizes computer vision and Convolutional Neural Networks (CNNs) for handwriting recognition (HWR) to detect and transcribe handwritten expressions accurately. CNNs extract key features from handwriting, such as edges, curves, and stroke patterns, enabling precise character recognition across varied handwriting styles. The process involves:
 1. Image preprocessing and feature extraction
 2. Character and symbol recognition
 3. Step-by-step solution analysis
@@ -53,7 +52,7 @@ To effectively train the model, we merge the two datasets together to create a [
 - Requirement: Python 3.11
 - Installing dependencies: `pip install -r requirements.txt`
 
-- trainModel.py: fine tune available pre-trained resnet18 using Handwritten Math Symbols dataset to recognize each of the math symbols
+- trainModel.py: fine-tune the available pre-trained ResNet18 using Handwritten Math Symbols dataset to recognize each of the math symbols
 
 - detectorModel.py: run the trained model to:
   - Recognize handwritten math work
