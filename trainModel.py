@@ -8,7 +8,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 os.makedirs('model', exist_ok=True)
 
 path = "data/dataset"
-dls = ImageDataLoaders.from_folder(path, valid_pct=0.2, seed=42, item_tfms=Resize(25))
+dls = ImageDataLoaders.from_folder(path, valid_pct=0.2, seed=42, item_tfms=Resize(28))
 dls.show_batch()
 
 learn = vision_learner(dls, resnet18, metrics=error_rate)
