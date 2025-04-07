@@ -7,7 +7,7 @@ model = load_learner(modelLocalPath)
 def detector(digImg):
     digImg = Image.open(digImg)
     digImg = digImg.convert("L")
-    digImg = digImg.resize((25, 25))
+    digImg = digImg.resize((28, 28))
     prediction = model.predict(digImg)[0]
     if prediction in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
         return int(prediction)
