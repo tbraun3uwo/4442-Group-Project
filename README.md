@@ -1,5 +1,5 @@
 # AI-Powered Handwriting Recognition for Automated Student Work Evaluation
-# Project members: Travis, Nasri, Tim, Reesa
+# Project members: Travis, Nasri, Tim
 # MathStang - an AI-powered grading assistant for handwritten math work
 =======
 ## Project Members
